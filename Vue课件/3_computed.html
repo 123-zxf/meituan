@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>字符串{{msg}}</h1>
+        <h1>反转字符串{{reversMsg}}</h1>
+        <h1>反转字符串{{reversMethod()}}</h1>
+        <h1>firstName:{{firstName}}</h1>
+        <h1>lastName:{{lastName}}</h1>
+        <h1>fullName:{{fullName}}</h1>
+        <button @click="change">change</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        let vue=new Vue({
+            el:"#app",
+            data:{
+                msg:"CSDN",
+                firstName:"zhang",
+                lastName:"san"
+            },
+            computed: {//此方法会写入缓存，重复调用不会重新计算，默认get方法，但加入set方法即可修改数剧 
+                reversMsg:function(){
+                    return this.msg.split('').reverse().join('');
+                },
+                fullName:{
+                    get:function(){
+                        return this.firstName+" "+this.lastName;
+                    },
+                    set:function(newValue){
+                        let name=newValue.split(' ');
+                        this.firstName=name[0];
+                        this.lastName=name[1];
+                    }
+                }
+            },
+            methods: {
+                reversMethod(){
+                    return this.msg.split('').reverse().join('');
+                },
+                change(){
+                    this.fullName="li si"
+                }
+            }
+            
+        })
+    </script>
+</body>
+</html>

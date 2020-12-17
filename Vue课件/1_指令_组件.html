@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="vue.js"></script>
+    <style>
+        .a {
+            background-color: red;
+        }
+
+        .b {
+            border: 5px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        {{msg}}
+        {{count+1}}
+        {{isOk?'OK':'NO'}}
+        <button v-on:click="add">click</button>
+        <button @click="count++">click</button>
+        <a href="http://www.baidu.com" @click.prevent="fn($event)">百度</a>
+        <div v-html="msg"></div>
+        <h2 v-bind:class="classA">CSDN</h2>
+        <h2 :class="{'a':isA,'b':isB}">CSDN</h2>
+        <hr>
+        <div v-if="isLogin">你好</div>
+        <div v-else>请登录</div>
+        <div v-if="type==1">A</div>
+        <div v-else-if="type===2">B</div>
+        <div v-else>C</div>
+
+        <hr>
+        <div v-show='isShow'>你好呀</div>
+        <hr>
+        <ul>
+            <li v-for="item,index in num" :key="index">{{item}},{{index}}</li>
+        </ul>
+        <div v-for="item,key in obj">{{item}}{{key}}</div>
+        <div>
+            <h2>姓名：{{obj.name}}</h2>
+            <input type="text" v-model="obj.name">
+        </div>
+        <div>
+            <h2>性别：{{obj.sex}}</h2>
+            <input type="radio" v-model="obj.sex" value="男">男
+            <input type="radio" v-model="obj.sex" value="女">女
+        </div>
+        <div>
+            <h2>爱好：{{obj.hobby}}</h2>
+            <input type="checkbox" v-model="obj.hobby" value="吃东西">吃东西
+            <input type="checkbox" v-model="obj.hobby" value="学习">学习
+        </div>
+        <hr>
+        <demo></demo>
+        <demo2 title="CSDN" content="专业开发者社区" @parentevent="fntemp">
+            <input type="text">
+            <button>click</button>
+        </demo2>
+        
+    </div>
+    <template id="temp">
+        <div>
+            <h2>
+                {{title}}
+            </h2>
+            <div>{{content}}
+                <slot>
+                </slot>
+                <hr>
+                <button @click="clickHandle">点击</button>
+            </div>
+        </div>
+    </template>
+    <script>
+        Vue.component('demo', {
+            template: "<h1>demo{{msg}}</h1>",
+            data() {
+                return {
+                    msg: "我是组件一"
+                }
+            }
+        })
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '<span>hello Vue</span>',
+                count: 1,
+                isOk: true,
+                classA: "a",
+                isA: true,
+                isB: true,
+                isLogin: false,
+                type: 2,
+                isShow: false,
+                num: [1, 2, 3],
+                obj: {
+                    name: "张三",
+                    sex: '男',
+                    age: 16,
+                    hobby: ["吃东西",]
+                },
+
+            },
+            components: {
+                "demo2": {
+                    template: "#temp",
+                    //props:['title','content']
+                    props: {
+                        title: String,
+                        content: String
+                        //在这里加上数据类型等验证，可以保证传入数据的准确性
+                    },
+                    methods: {
+                        clickHandle() {
+                            //$emit
+                            this.$emit('parentevent', '我是子组件')
+                        }
+                    }
+                }
+            },
+            methods: {
+                add(e) {
+                    console.log(e.target);
+                    this.count--;
+                },
+                fn() {
+                    console.log('点击跳转');
+                },
+                fntemp(msg) {
+                    console.log(msg)
+                }
+            }
+        })
+        // console.log(vm.msg);
+        // console.log(vm.$el);
+        // console.log(vm.$data);
+
+    </script>
+</body>
+
+</html>

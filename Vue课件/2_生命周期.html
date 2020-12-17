@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h2 id="title">{{count}}</h2>
+        <button @click="count++">click</button>
+        <button @click="des()">click</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        let vue=new Vue({
+            el:"#app",
+            data:{
+                count:1,
+            },
+            methods: {
+                des(){
+                    vue.$destroy();
+                }
+            },
+            beforeCreate(){//在数据还没有生成的时候启动
+                console.log("beforeCreate:",this.$el,this.$data);
+            },
+            created(){//组件实例已经创建完成，数据也出现了，但是dom还没有生成
+                console.log("creaated:",this.$el,this.$data);
+            },
+            beforeMount () {//编译模板挂载之前
+                console.log("beforeMount:",this.$el,this.$data);
+            },
+            mounted () {//元素挂载之后
+                console.log("mounted:",this.$el,this.$data);
+            },
+            beforeUpdate () {//元素更新之前的值
+                console.log("beforeUpdate:",document.getElementById('title').innerHTML,this.$data);
+            },
+            updated () {//元素更新之后的值
+                console.log("updated:",document.getElementById('title').innerHTML,this.$data);
+            },
+            beforeDestroy () {
+                console.log('beforeDestroy');
+            },
+            destroyed () {
+                console.log('destroyed');
+            }
+        })
+    </script>
+</body>
+</html>
